@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.basicfunction.mapper.ManageEquipmentMapper">
+    
+    <resultMap type="ManageEquipment" id="ManageEquipmentResult">
+        <result property="meId"    column="me_id"    />
+        <result property="mePosition"    column="me_position"    />
+        <result property="meState"    column="me_state"    />
+        <result property="maSize"    column="ma_size"    />
+        <result property="meImgName"    column="me_img_name"    />
+        <result property="buyDate"    column="buy_date"    />
+        <result property="buyName"    column="buy_name"    />
+        <result property="pepairSize"    column="pepair_size"    />
+    </resultMap>
+
+    <sql id="selectManageEquipmentVo">
+        select me_id, me_position, me_state, ma_size, me_img_name, buy_date, buy_name, pepair_size from manage_equipment
+    </sql>
+
+    <select id="selectManageEquipmentList" parameterType="ManageEquipment" resultMap="ManageEquipmentResult">
+        <include refid="selectManageEquipmentVo"/>
+        <where>  
+            <if test="mePosition != null  and mePosition != ''"> and me_position = #{mePosition}</if>
+            <if test="meState != null "> and me_state = #{meState}</if>
+            <if test="maSize != null "> and ma_size = #{maSize}</if>
+            <if test="meImgName != null  and meImgName != ''"> and me_img_name like concat('%', #{meImgName}, '%')</if>
+            <if test="buyDate != null "> and buy_date = #{buyDate}</if>
+            <if test="buyName != null  and buyName != ''"> and buy_name like concat('%', #{buyName}, '%')</if>
+            <if test="pepairSize != null "> and pepair_size = #{pepairSize}</if>
+        </where>
+    </select>
+    
+    <select id="selectManageEquipmentById" parameterType="String" resultMap="ManageEquipmentResult">
+        <include refid="selectManageEquipmentVo"/>
+        where me_id = #{meId}
+    </select>
+        
+    <insert id="insertManageEquipment" parameterType="ManageEquipment">
+        insert into manage_equipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="meId != null  and meId != ''">me_id,</if>
+            <if test="mePosition != null  and mePosition != ''">me_position,</if>
+            <if test="meState != null ">me_state,</if>
+            <if test="maSize != null ">ma_size,</if>
+            <if test="meImgName != null  and meImgName != ''">me_img_name,</if>
+            <if test="buyDate != null ">buy_date,</if>
+            <if test="buyName != null  and buyName != ''">buy_name,</if>
+            <if test="pepairSize != null ">pepair_size,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="meId != null  and meId != ''">#{meId},</if>
+            <if test="mePosition != null  and mePosition != ''">#{mePosition},</if>
+            <if test="meState != null ">#{meState},</if>
+            <if test="maSize != null ">#{maSize},</if>
+            <if test="meImgName != null  and meImgName != ''">#{meImgName},</if>
+            <if test="buyDate != null ">#{buyDate},</if>
+            <if test="buyName != null  and buyName != ''">#{buyName},</if>
+            <if test="pepairSize != null ">#{pepairSize},</if>
+         </trim>
+    </insert>
+
+    <update id="updateManageEquipment" parameterType="ManageEquipment">
+        update manage_equipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mePosition != null  and mePosition != ''">me_position = #{mePosition},</if>
+            <if test="meState != null ">me_state = #{meState},</if>
+            <if test="maSize != null ">ma_size = #{maSize},</if>
+            <if test="meImgName != null  and meImgName != ''">me_img_name = #{meImgName},</if>
+            <if test="buyDate != null ">buy_date = #{buyDate},</if>
+            <if test="buyName != null  and buyName != ''">buy_name = #{buyName},</if>
+            <if test="pepairSize != null ">pepair_size = #{pepairSize},</if>
+        </trim>
+        where me_id = #{meId}
+    </update>
+
+    <delete id="deleteManageEquipmentById" parameterType="String">
+        delete from manage_equipment where me_id = #{meId}
+    </delete>
+
+    <delete id="deleteManageEquipmentByIds" parameterType="String">
+        delete from manage_equipment where me_id in 
+        <foreach item="meId" collection="array" open="(" separator="," close=")">
+            #{meId}
+        </foreach>
+    </delete>
+    
+</mapper>
