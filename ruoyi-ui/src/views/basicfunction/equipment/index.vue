@@ -10,14 +10,22 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="设备状态 是否损坏 0完好 1损坏 " prop="meState">
-        <el-input
+      <el-form-item label="设备状态 " prop="meState">
+        <!-- <el-input
           v-model="queryParams.meState"
           placeholder="请输入设备状态 是否损坏 0完好 1损坏 "
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-        />
+        /> -->
+        <el-select v-model="queryParams.meState" filterable placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="预约人数" prop="maSize">
         <el-input
@@ -114,7 +122,16 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="设备ID" align="center" prop="meId" />
       <el-table-column label="设备位置" align="center" prop="mePosition" />
-      <el-table-column label="设备状态 是否损坏 0完好 1损坏 " align="center" prop="meState" />
+      <el-table-column label="设备状态 是否损坏 0完好 1损坏 " align="center" prop="meState" >
+        <template  slot-scope="scope">
+            <span v-if="scope.row.meState== 0">
+                完好
+            </span>
+             <span v-if="scope.row.meState== 1">
+               损坏
+            </span>
+        </template>
+      </el-table-column>
       <el-table-column label="预约人数" align="center" prop="maSize" />
       <el-table-column label="图片名称" align="center" prop="meImgName" />
       <el-table-column label="购入时间" align="center" prop="buyDate" width="180">
@@ -229,7 +246,14 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      options: [{
+        value: '0',
+        label: '完好'
+      }, {
+        value: '1',
+        label: '损坏'
+      }]
     };
   },
   created() {
@@ -241,16 +265,16 @@ export default {
       this.loading = true;
       listEquipment(this.queryParams).then(response => {
         //修改设备状态
-        if(response.rows != undefined){
-          for(var jr=0; jr<response.rows.length; jr++){
-            if(response.rows[jr].meState === '0'){
-                response.rows[jr].meState = "完好"
-              }else{
-                 response.rows[jr].meState = "损坏"
-              }
-          }
+        // if(response.rows != undefined){
+        //   for(var jr=0; jr<response.rows.length; jr++){
+        //     if(response.rows[jr].meState === '0'){
+        //         response.rows[jr].meState = "完好"
+        //       }else{
+        //          response.rows[jr].meState = "损坏"
+        //       }
+        //   }
             
-        }
+        // }
         this.equipmentList = response.rows;
         this.total = response.total;
         this.loading = false;

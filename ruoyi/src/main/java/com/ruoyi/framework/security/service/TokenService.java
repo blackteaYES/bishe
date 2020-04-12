@@ -58,6 +58,7 @@ public class TokenService
     {
         // 获取请求携带的令牌
         String token = getToken(request);
+        System.err.println("token:"+token);
         if (StringUtils.isNotEmpty(token))
         {
             Claims claims = parseToken(token);

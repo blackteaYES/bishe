@@ -47,10 +47,9 @@ public class ManageEquipmentController extends BaseController
     @PreAuthorize("@ss.hasPermi('basicfunction:equipment:list')")
     @GetMapping("/list")
     @ApiOperation("获取设备列表")
-    public TableDataInfo list()
+    public TableDataInfo list(ManageEquipment manageEquipment)
     {
         startPage();
-        ManageEquipment manageEquipment = new ManageEquipment();
         List<ManageEquipment> list = manageEquipmentService.selectManageEquipmentList(manageEquipment);
         return getDataTable(list);
     }

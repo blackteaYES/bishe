@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.EquipmentNameMapper">
+    
+    <resultMap type="EquipmentName" id="EquipmentNameResult">
+        <result property="enId"    column="en_id"    />
+        <result property="enName"    column="en_name"    />
+    </resultMap>
+
+    <sql id="selectEquipmentNameVo">
+        select en_id, en_name from equipment_name
+    </sql>
+
+    <select id="selectEquipmentNameList" parameterType="EquipmentName" resultMap="EquipmentNameResult">
+        <include refid="selectEquipmentNameVo"/>
+        <where>  
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectEquipmentNameById" parameterType="Long" resultMap="EquipmentNameResult">
+        <include refid="selectEquipmentNameVo"/>
+        where en_id = #{enId}
+    </select>
+        
+    <insert id="insertEquipmentName" parameterType="EquipmentName" useGeneratedKeys="true" keyProperty="enId">
+        insert into equipment_name
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="enName != null  and enName != ''">en_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="enName != null  and enName != ''">#{enName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEquipmentName" parameterType="EquipmentName">
+        update equipment_name
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enName != null  and enName != ''">en_name = #{enName},</if>
+        </trim>
+        where en_id = #{enId}
+    </update>
+
+    <delete id="deleteEquipmentNameById" parameterType="Long">
+        delete from equipment_name where en_id = #{enId}
+    </delete>
+
+    <delete id="deleteEquipmentNameByIds" parameterType="String">
+        delete from equipment_name where en_id in 
+        <foreach item="enId" collection="array" open="(" separator="," close=")">
+            #{enId}
+        </foreach>
+    </delete>
+    
+</mapper>
