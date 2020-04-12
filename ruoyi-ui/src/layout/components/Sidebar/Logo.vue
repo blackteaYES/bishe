@@ -26,7 +26,8 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      // title: '若依管理系统',
+      title: '设备预约管理系统',
       logo: logoImg
     }
   }

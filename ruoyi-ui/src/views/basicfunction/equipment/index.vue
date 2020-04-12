@@ -264,17 +264,6 @@ export default {
     getList() {
       this.loading = true;
       listEquipment(this.queryParams).then(response => {
-        //修改设备状态
-        // if(response.rows != undefined){
-        //   for(var jr=0; jr<response.rows.length; jr++){
-        //     if(response.rows[jr].meState === '0'){
-        //         response.rows[jr].meState = "完好"
-        //       }else{
-        //          response.rows[jr].meState = "损坏"
-        //       }
-        //   }
-            
-        // }
         this.equipmentList = response.rows;
         this.total = response.total;
         this.loading = false;
